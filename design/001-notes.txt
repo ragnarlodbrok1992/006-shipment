@@ -1,0 +1,5 @@
+1. Starting
+
+  using: mach_glfw - GLFW bindings for Zig from Mach Engine
+  using: zgl - Zig OpenGL bindings
+
