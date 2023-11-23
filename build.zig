@@ -1,4 +1,5 @@
 const std = @import("std");
+const glfw = @import("mach_glfw");
 
 pub fn build(b: *std.Build) void {
     const target = b.standardTargetOptions(.{});
@@ -11,14 +12,14 @@ pub fn build(b: *std.Build) void {
         .optimize = optimize,
     });
 
-    // Use mach-glfw
-    const glfw_dep = b.dependency("mach_glfw", .{
-        .target = exe.target,
-        .optimize = exe.optimize,
+    const mach_glfw_dep = b.dependency("mach_glfw", .{
+        .target = target,
+        .optimize = optimize,
     });
 
-    exe.addModule("mach-glfw", glfw_dep.module("mach-glfw"));
-    @import("mach_glfw").link(glfw_dep.builder, exe);
+    exe.addModule("mach-glfw", mach_glfw_dep.module("mach-glfw"));
+
+    glfw.link(mach_glfw_dep.builder, exe);
 
     b.installArtifact(exe);
 

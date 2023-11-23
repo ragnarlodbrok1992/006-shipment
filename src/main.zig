@@ -9,7 +9,7 @@ const WINDOW_HEIGHT = 600;
 
 // Default GLFW error handling callback
 fn errorCallback(error_code: glfw.ErrorCode, description: [:0]const u8) void {
-    std.log.err1("GLFW Error: {} -> {s}\n", .{ error_code, description });
+    std.log.err("GLFW Error: {} -> {s}\n", .{ error_code, description });
 }
 
 pub fn main() !void {
@@ -19,7 +19,7 @@ pub fn main() !void {
 
     // Setting callback
     glfw.setErrorCallback(errorCallback);
-    if (!glfw.init()) {
+    if (!glfw.init(.{})) {
         std.log.err("Failed to initialize GLFW: {?s}", .{glfw.getErrorString()});
         std.process.exit(1);
     }

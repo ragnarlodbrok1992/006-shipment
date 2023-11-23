@@ -3,3 +3,8 @@
   using: mach_glfw - GLFW bindings for Zig from Mach Engine
   using: zgl - Zig OpenGL bindings
 
+  Zig and libraries from mach engine - not a whole engine, since it didn't work for me.
+
+2. Abstract - idea for game/engine.
+3. Game loop
+4. Input
