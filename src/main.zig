@@ -1,11 +1,18 @@
 const std = @import("std");
 const glfw = @import("mach-glfw");
+const gl = @import("gl");
 
 // Engine constants
 const version = "0.0.1";
 
 const WINDOW_WIDTH = 800;
 const WINDOW_HEIGHT = 600;
+
+// Getting OpenGL proc address
+fn glGetProcAddress(p: glfw.GLProc, proc: [:0]const u8) ?gl.FunctionPointer {
+    _ = p;
+    return glfw.getProcAddress(proc);
+}
 
 // Default GLFW error handling callback
 fn errorCallback(error_code: glfw.ErrorCode, description: [:0]const u8) void {
@@ -17,7 +24,7 @@ fn framebufferResizeCallback(window: glfw.Window, width: u32, height: u32) void 
     _ = window;
     _ = width;
     _ = height;
-    // glfw.glViewport(0, 0, width, height);
+    // gl.glViewport(0, 0, width, height);
 }
 
 pub fn main() !void {
@@ -43,8 +50,13 @@ pub fn main() !void {
     };
     defer window.destroy();
 
+    glfw.makeContextCurrent(window);
+
+    const proc: glfw.GLProc = undefined;
+    try gl.load(proc, glGetProcAddress);
+
     // Setting framebuffer resize callback
-    window.setFramebufferSizeCallback(framebufferResizeCallback);
+    // window.setFramebufferSizeCallback(framebufferResizeCallback);
 
     // Wait for the window to close
     while (!window.shouldClose()) {
@@ -52,6 +64,8 @@ pub fn main() !void {
         glfw.pollEvents();
 
         // Refresh screen
+        gl.clearColor(0.2, 0.3, 0.3, 1.0);
+        gl.clear(gl.COLOR_BUFFER_BIT);
 
         // Final render step - swap buffers
         window.swapBuffers();
