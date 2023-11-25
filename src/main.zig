@@ -12,6 +12,14 @@ fn errorCallback(error_code: glfw.ErrorCode, description: [:0]const u8) void {
     std.log.err("GLFW Error: {} -> {s}\n", .{ error_code, description });
 }
 
+// Default GLFW framebuffer resize callback
+fn framebufferResizeCallback(window: glfw.Window, width: u32, height: u32) void {
+    _ = window;
+    _ = width;
+    _ = height;
+    // glfw.glViewport(0, 0, width, height);
+}
+
 pub fn main() !void {
     // Entry - exit message
     std.debug.print("Shipment engine version: {s}\n", .{version});
@@ -19,6 +27,9 @@ pub fn main() !void {
 
     // Setting callback
     glfw.setErrorCallback(errorCallback);
+    // glfw.setFramebufferSizeCallback(framebufferResizeCallback);
+
+    // Glfw initialization
     if (!glfw.init(.{})) {
         std.log.err("Failed to initialize GLFW: {?s}", .{glfw.getErrorString()});
         std.process.exit(1);
@@ -32,10 +43,17 @@ pub fn main() !void {
     };
     defer window.destroy();
 
+    // Setting framebuffer resize callback
+    window.setFramebufferSizeCallback(framebufferResizeCallback);
+
     // Wait for the window to close
     while (!window.shouldClose()) {
         // Main engine loop
-        window.swapBuffers();
         glfw.pollEvents();
+
+        // Refresh screen
+
+        // Final render step - swap buffers
+        window.swapBuffers();
     }
 }
