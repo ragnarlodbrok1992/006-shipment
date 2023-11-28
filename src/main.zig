@@ -22,9 +22,11 @@ fn errorCallback(error_code: glfw.ErrorCode, description: [:0]const u8) void {
 // Default GLFW framebuffer resize callback
 fn framebufferResizeCallback(window: glfw.Window, width: u32, height: u32) void {
     _ = window;
-    _ = width;
-    _ = height;
-    // gl.glViewport(0, 0, width, height);
+    var c_int_width: c_int = @intCast(width);
+    var c_int_height: c_int = @intCast(height);
+    // std.debug.print("Framebuffer resized to: {}x{}\n", .{ width, height });
+    // gl.viewport(0, 0, @as(c_int, width), @as(c_int, height));
+    gl.viewport(0, 0, c_int_width, c_int_height);
 }
 
 pub fn main() !void {
@@ -56,7 +58,7 @@ pub fn main() !void {
     try gl.load(proc, glGetProcAddress);
 
     // Setting framebuffer resize callback
-    // window.setFramebufferSizeCallback(framebufferResizeCallback);
+    window.setFramebufferSizeCallback(framebufferResizeCallback);
 
     // Wait for the window to close
     while (!window.shouldClose()) {
